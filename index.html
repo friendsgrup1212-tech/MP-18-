@@ -1,0 +1,408 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hamara Shahdol | Smart City Portal</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--primary:#075985;
+--secondary:#0ea5e9;
+--bg:#f1f5f9;
+--card:#fff;
+--text:#172033;
+}
+body{
+font-family:Arial,sans-serif;
+background:var(--bg);
+color:var(--text);
+transition:.3s;
+}
+body.dark{
+--bg:#101827;
+--card:#1e293b;
+--text:#f8fafc;
+}
+header{
+background:linear-gradient(120deg,#075985,#0284c7);
+color:white;padding:18px 6%;
+display:flex;justify-content:space-between;
+align-items:center;flex-wrap:wrap;gap:15px;
+}
+.logo{font-size:25px;font-weight:bold}
+nav{display:flex;gap:15px;flex-wrap:wrap}
+nav a{color:white;text-decoration:none;font-weight:bold}
+nav a:hover{color:#fde68a}
+button{cursor:pointer;border:0;border-radius:8px;padding:10px 16px}
+.hero{
+min-height:390px;
+background:linear-gradient(#0008,#0008),
+url('https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1600');
+background-size:cover;background-position:center;
+color:white;display:flex;flex-direction:column;
+align-items:center;justify-content:center;text-align:center;
+padding:30px;
+}
+.hero h1{font-size:48px;margin-bottom:15px}
+.hero p{font-size:19px}
+.search{
+margin:20px auto;max-width:650px;display:flex;
+padding:10px;background:var(--card);border-radius:12px;
+}
+.search input{flex:1;min-width:0;border:0;outline:0;
+background:transparent;color:var(--text);font-size:16px;padding:10px}
+.container{padding:35px 6%}
+.heading{text-align:center;margin-bottom:25px}
+.heading h2{font-size:29px;color:var(--secondary)}
+.grid{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:20px;
+}
+.card{
+background:var(--card);padding:20px;border-radius:14px;
+box-shadow:0 4px 15px #0001;transition:.25s;
+}
+.card:hover{transform:translateY(-5px)}
+.card h3{margin:10px 0;color:var(--secondary)}
+.card p{line-height:1.7}
+.card img{width:100%;height:160px;object-fit:cover;border-radius:10px}
+.btn{background:var(--primary);color:white;margin-top:12px}
+.btn:hover{background:var(--secondary)}
+.stats{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:15px;margin-top:25px;
+}
+.stat{
+background:var(--card);padding:25px;text-align:center;
+border-radius:12px;
+}
+.stat h2{color:var(--secondary);font-size:30px}
+section{scroll-margin-top:20px}
+.map iframe{width:100%;height:400px;border:0;border-radius:12px}
+input,textarea,select{
+padding:12px;border-radius:8px;border:1px solid #aaa;
+width:100%;margin:8px 0;font-size:15px;
+background:var(--card);color:var(--text);
+}
+footer{
+background:#082f49;color:white;padding:35px 6%;
+text-align:center;line-height:2;
+}
+.hidden{display:none!important}
+#clock{font-weight:bold}
+.small{font-size:13px;color:gray}
+#toast{
+position:fixed;bottom:20px;right:20px;
+background:#075985;color:white;padding:15px;
+border-radius:10px;display:none;z-index:99;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">🇮🇳 HAMARA SHAHDOL</div>
+<nav>
+<a href="#home">Home</a>
+<a href="#about">About</a>
+<a href="#places">Places</a>
+<a href="#education">Education</a>
+<a href="#business">Business</a>
+<a href="#map">Map</a>
+<a href="#contact">Contact</a>
+</nav>
+<button onclick="toggleDark()">🌙</button>
+</header>
+
+<section class="hero" id="home">
+<h1>हमारा शहडोल ❤️</h1>
+<p>अपना शहर, अपनी पहचान, अपना शहडोल</p>
+<p style="margin-top:15px">Discover • Explore • Connect</p>
+
+<div class="stats" style="width:100%;max-width:750px">
+<div class="stat"><h2>🏙️</h2><p>Smart City Portal</p></div>
+<div class="stat"><h2>📍</h2><p>Explore Shahdol</p></div>
+<div class="stat"><h2>🤝</h2><p>Local Community</p></div>
+</div>
+</section>
+
+<div class="search">
+<input id="searchInput" placeholder="🔍 कुछ भी Search करें...">
+<button class="btn" onclick="searchSite()">Search</button>
+</div>
+
+<div class="container" id="about">
+<div class="heading">
+<h2>हमारा शहडोल</h2>
+<p>शहडोल के बारे में जानें</p>
+</div>
+<div class="card">
+<h3>शहडोल में आपका स्वागत है!</h3>
+<p>
+शहडोल मध्य प्रदेश का एक महत्वपूर्ण शहर और जिला है।
+यह वेबसाइट शहडोल के लोगों, विद्यार्थियों और पर्यटकों
+को उपयोगी जानकारी एक ही स्थान पर उपलब्ध कराने के
+उद्देश्य से बनाई गई है।
+</p>
+<p style="margin-top:12px">
+आज की तारीख: <span id="date"></span>
+</p>
+<p>वर्तमान समय: <span id="clock"></span></p>
+</div>
+</div>
+
+<section class="container" id="places">
+<div class="heading">
+<h2>📍 Explore Shahdol</h2>
+<p>शहर और आसपास की जगहें</p>
+</div>
+
+<div class="grid searchable">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1511497584788-876760111969?w=600">
+<h3>प्राकृतिक स्थल</h3>
+<p>शहडोल और आसपास के प्राकृतिक स्थलों की जानकारी।</p>
+<a target="_blank" href="https://www.google.com/maps/search/tourist+places+near+Shahdol">Map पर देखें</a>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600">
+<h3>घूमने की जगहें</h3>
+<p>पर्यटन और आसपास के आकर्षक स्थान खोजें।</p>
+<a target="_blank" href="https://www.google.com/maps/search/places+to+visit+Shahdol">Explore करें</a>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=600">
+<h3>Nature & Photography</h3>
+<p>प्रकृति और फोटोग्राफी के लिए सुंदर जगहें।</p>
+<a target="_blank" href="https://www.google.com/search?q=Shahdol+tourism">जानें</a>
+</div>
+
+</div>
+</section>
+
+<section class="container" id="education">
+<div class="heading">
+<h2>🎓 Education Center</h2>
+<p>शिक्षा से जुड़ी जानकारी</p>
+</div>
+<div class="grid searchable">
+<div class="card">
+<h3>🏫 Schools</h3>
+<p>शहडोल के स्कूल खोजें।</p>
+<a href="https://www.google.com/maps/search/schools+in+Shahdol" target="_blank">Find Schools</a>
+</div>
+<div class="card">
+<h3>🎓 Colleges</h3>
+<p>कॉलेज और उच्च शिक्षा संस्थान खोजें।</p>
+<a href="https://www.google.com/maps/search/colleges+in+Shahdol" target="_blank">Find Colleges</a>
+</div>
+<div class="card">
+<h3>📚 Online Learning</h3>
+<p>ऑनलाइन पढ़ाई के उपयोगी प्लेटफॉर्म।</p>
+<a href="https://www.swayam.gov.in/" target="_blank">Study Now</a>
+</div>
+</div>
+</section>
+
+<section class="container" id="business">
+<div class="heading">
+<h2>🏪 Local Business Directory</h2>
+<p>शहडोल के स्थानीय बिजनेस खोजें</p>
+</div>
+<div class="grid searchable">
+<div class="card"><h3>🍽️ Restaurants</h3>
+<p>खाने-पीने की जगहें खोजें।</p>
+<a href="https://www.google.com/maps/search/restaurants+in+Shahdol" target="_blank">Search</a></div>
+<div class="card"><h3>🏨 Hotels</h3>
+<p>शहडोल के होटल खोजें।</p>
+<a href="https://www.google.com/maps/search/hotels+in+Shahdol" target="_blank">Search</a></div>
+<div class="card"><h3>🛍️ Shopping</h3>
+<p>स्थानीय दुकानें और मार्केट।</p>
+<a href="https://www.google.com/maps/search/shops+in+Shahdol" target="_blank">Search</a></div>
+</div>
+</section>
+
+<section class="container" id="services">
+<div class="heading">
+<h2>🛠️ Important Services</h2>
+</div>
+<div class="grid searchable">
+<div class="card"><h3>🏥 Hospitals</h3>
+<p>नजदीकी अस्पताल खोजें।</p>
+<a target="_blank" href="https://www.google.com/maps/search/hospitals+in+Shahdol">Find Hospitals</a></div>
+<div class="card"><h3>🚓 Police Stations</h3>
+<p>पुलिस स्टेशन की लोकेशन खोजें।</p>
+<a target="_blank" href="https://www.google.com/maps/search/police+station+Shahdol">Find Police</a></div>
+<div class="card"><h3>🚑 Emergency</h3>
+<p>भारत की आपातकालीन सेवा का नंबर 112।</p>
+<a href="tel:112" class="btn">Call 112</a></div>
+</div>
+</section>
+
+<section class="container" id="weather">
+<div class="heading"><h2>🌤️ Weather Information</h2></div>
+<div class="card" style="text-align:center">
+<h3>Shahdol Weather</h3>
+<p id="weatherResult">मौसम की जानकारी प्राप्त करने के लिए बटन दबाएँ।</p>
+<button class="btn" onclick="getWeather()">Check Live Weather</button>
+</div>
+</section>
+
+<section class="container" id="map">
+<div class="heading">
+<h2>🗺️ Shahdol Live Map</h2>
+<p>शहडोल का नक्शा देखें</p>
+</div>
+<div class="map">
+<iframe
+src="https://www.openstreetmap.org/export/embed.html?bbox=81.25%2C23.25%2C81.50%2C23.40&layer=mapnik"
+loading="lazy">
+</iframe>
+</div>
+</section>
+
+<section class="container" id="events">
+<div class="heading"><h2>📅 Events & News</h2></div>
+<div class="grid">
+<div class="card">
+<h3>📰 Shahdol News</h3>
+<p>शहडोल की ताजा खबरें पढ़ें।</p>
+<a target="_blank" href="https://www.google.com/search?q=Shahdol+latest+news">Read News</a>
+</div>
+<div class="card">
+<h3>🎉 Local Events</h3>
+<p>शहर के कार्यक्रम और आयोजन खोजें।</p>
+<a target="_blank" href="https://www.google.com/search?q=Shahdol+events">Explore Events</a>
+</div>
+</div>
+</section>
+
+<section class="container" id="gallery">
+<div class="heading"><h2>📸 Photo Gallery</h2></div>
+<div class="grid">
+<div class="card"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=600" alt="Nature"></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1511497584788-876760111969?w=600" alt="Forest"></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600" alt="Landscape"></div>
+</div>
+</section>
+
+<section class="container" id="contact">
+<div class="heading">
+<h2>📩 Contact & Feedback</h2>
+<p>अपना सुझाव भेजें</p>
+</div>
+<div class="card">
+<form id="feedbackForm">
+<label>आपका नाम</label>
+<input id="name" required placeholder="अपना नाम लिखें">
+<label>ईमेल</label>
+<input id="email" type="email" placeholder="Email">
+<label>आपका सुझाव</label>
+<textarea id="message" required rows="5" placeholder="अपना सुझाव लिखें"></textarea>
+<button class="btn" type="submit">Submit Feedback</button>
+</form>
+</div>
+</section>
+
+<footer>
+<h2>🇮🇳 HAMARA SHAHDOL</h2>
+<p>अपना शहर, अपनी पहचान ❤️</p>
+<p>Made with ❤️ in India</p>
+<p>© 2026 Hamara Shahdol. All Rights Reserved.</p>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+function toggleDark(){
+document.body.classList.toggle("dark");
+localStorage.setItem("darkMode",
+document.body.classList.contains("dark"));
+}
+if(localStorage.getItem("darkMode")==="true"){
+document.body.classList.add("dark");
+}
+
+function updateTime(){
+let d=new Date();
+document.getElementById("clock").textContent=
+d.toLocaleTimeString("hi-IN");
+document.getElementById("date").textContent=
+d.toLocaleDateString("hi-IN");
+}
+updateTime();
+setInterval(updateTime,1000);
+
+function notify(msg){
+let t=document.getElementById("toast");
+t.textContent=msg;
+t.style.display="block";
+setTimeout(()=>t.style.display="none",3000);
+}
+
+function searchSite(){
+let q=document.getElementById("searchInput").value
+.toLowerCase().trim();
+let cards=document.querySelectorAll(".searchable .card");
+let count=0;
+cards.forEach(card=>{
+let match=card.innerText.toLowerCase().includes(q);
+card.classList.toggle("hidden",q!==""&&!match);
+if(match)count++;
+});
+if(q===""){
+notify("सभी जानकारी दिखाई जा रही है");
+}else{
+notify(count+" परिणाम मिले");
+document.getElementById("places").scrollIntoView();
+}
+}
+document.getElementById("searchInput")
+.addEventListener("keydown",e=>{
+if(e.key==="Enter")searchSite();
+});
+
+async function getWeather(){
+let el=document.getElementById("weatherResult");
+el.textContent="मौसम लोड हो रहा है...";
+try{
+let url="https://api.open-meteo.com/v1/forecast?latitude=23.30&longitude=81.35&current=temperature_2m,relative_humidity_2m,wind_speed_10m";
+let response=await fetch(url);
+if(!response.ok)throw Error("Weather unavailable");
+let data=await response.json();
+let w=data.current;
+el.innerHTML=
+"🌡️ Temperature: "+w.temperature_2m+" °C<br>"+
+"💧 Humidity: "+w.relative_humidity_2m+"%<br>"+
+"💨 Wind Speed: "+w.wind_speed_10m+" km/h";
+}catch(e){
+el.textContent="मौसम की जानकारी अभी उपलब्ध नहीं है। इंटरनेट चेक करें।";
+}
+}
+
+document.getElementById("feedbackForm")
+.addEventListener("submit",function(e){
+e.preventDefault();
+let feedback={
+name:document.getElementById("name").value,
+email:document.getElementById("email").value,
+message:document.getElementById("message").value,
+date:new Date().toLocaleString()
+};
+let list=JSON.parse(localStorage.getItem("feedback")||"[]");
+list.push(feedback);
+localStorage.setItem("feedback",JSON.stringify(list));
+this.reset();
+notify("आपका Feedback इस ब्राउज़र में सेव हो गया!");
+});
+</script>
+
+</body>
+</html>
